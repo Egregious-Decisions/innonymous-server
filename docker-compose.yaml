@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  innonymous_server:
+    container_name: innonymous_server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    depends_on:
+      - mongo_db
+    env_file:
+      - .env
+    restart: always
+    networks:
+      egregious_network:
+
+
+  mongo_db:
+    container_name: ${MONGO_HOST}
+    image: 'mongo'
+    ports:
+      - '${MONGO_PORT}:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    restart: unless-stopped
+    volumes:
+      - egregious_storage:/data/db:rw
+    networks:
+      egregious_network:
+
+
+networks:
+  egregious_network:
+    driver: bridge
+
+volumes:
+  egregious_storage:
