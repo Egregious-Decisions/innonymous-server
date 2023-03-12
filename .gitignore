@@ -1,0 +1,19 @@
+# ??
+.vscode
+.idea
+.DS_Store
+
+# Python specific.
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments.
+.env
+.venv
+env/
+venv/
+
+# Logs.
+logs/
+*.log
