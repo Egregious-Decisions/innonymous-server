@@ -1,27 +1,17 @@
-###--VARIABLES--########################################################################################################
-
 IMAGE=smthngslv/innonymous-api-server
 
-########################################################################################################################
-
-###--TEST--#############################################################################################################
-
 test:
-	cd ./src/ && python -m pytest --testdox --cov=innonymous ./tests/
+	python -m pytest --testdox --cov=innonymous ./tests/
 
-########################################################################################################################
-
-###--LINT--#############################################################################################################
 
 format:
-	black ./src/ && ruff --fix ./src/innonymous/
+	black ./innonymous/ && ruff --fix ./innonymous/
+	black ./tests/ && ruff --fix ./tests/
 
 lint:
-	black --check ./src/ && ruff ./src/innonymous && mypy --install-types --non-interactive ./src/innonymous/
+	black --check ./innonymous/ && ruff ./innonymous/ && mypy --install-types --non-interactive ./innonymous/
+	black --check ./tests/ && ruff ./tests/ && mypy --install-types --non-interactive ./tests/
 
-########################################################################################################################
-
-###--DOCKER--###########################################################################################################
 
 build:
 	docker build -t ${IMAGE}:${TAG} .
@@ -34,5 +24,3 @@ pull:
 
 prune:
 	docker system prune -f
-
-########################################################################################################################

@@ -5,13 +5,14 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "innonymous"
 version = "0.0.0"
-packages = [{ include = "innonymous", from ="src" }]
-description = "https://github.com/Egregious-Decisions/innonymous-server"
+packages = [{ include = "innonymous" }]
+description = "A lightweight and fast API Server for anonymous chat"
+repository = "https://github.com/Egregious-Decisions/innonymous-server"
 authors = [
     "Ivan Izmailov <smthngslv@optic.xyz>",
-    "Anton Skoptsov <greg@greg.greg>",
-    "Vladislab Safonov <nt.desmond@kiosk.ru>",
-    "Andrey Khoroshavin <andrei-volunteer@su.xyz>",
+    "DOCtorActoAntohich <doctoractoantohich@gmail.com>",
+    "Vladislav Safonov <ntdesmond@gmail.com>",
+    "Andrey Khoroshavin <a.khoroshavin@innopolis.university>",
 ]
 
 [tool.poetry.dependencies]
