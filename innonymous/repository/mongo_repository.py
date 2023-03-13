@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import cast, Callable, Type, TypeVar
+from typing import Any, Callable, TypeVar, cast
 
-import pymotyc  # type: ignore
+import pymotyc
 from pydantic import BaseModel
 
 from innonymous.repository.any_repository import AnyRepository
@@ -22,20 +22,17 @@ class MongoRepository(AnyRepository[MongoModel, ModelIdType]):
         pass
 
     @abstractmethod
-    def __init__(
-            self,
-            collection: pymotyc.Collection[MongoModel]  # type: ignore
-    ):
+    def __init__(self, collection: pymotyc.Collection[MongoModel]) -> None:
         self.__collection = collection
 
     @abstractmethod
-    def identity_field(self, /):
+    def identity_field(self, /) -> str:
         pass
 
-    def _identity_query(self, identity: ModelIdType, /) -> dict:
+    def _identity_query(self, identity: ModelIdType, /) -> dict[str, ModelIdType]:
         return {self.identity_field(): identity}
 
-    def _sorting_query(self) -> dict:
+    def _sorting_query(self) -> dict[str, int]:
         return {self.identity_field(): ASCENDING_ORDER}
 
     async def save(self, item: MongoModel, /) -> MongoModel:
@@ -54,12 +51,7 @@ class MongoRepository(AnyRepository[MongoModel, ModelIdType]):
         except pymotyc.errors.NotFound:
             return None
 
-    async def get_or_default(
-            self,
-            identity: ModelIdType,
-            /, *,
-            default: MongoModel
-    ) -> MongoModel:
+    async def get_or_default(self, identity: ModelIdType, /, *, default: MongoModel) -> MongoModel:
         item = await self.get(identity)
         if item is None:
             return default
@@ -83,26 +75,20 @@ class MongoRepository(AnyRepository[MongoModel, ModelIdType]):
 
 
 def make_mongo_repository_type(
-        mongo_model: Type[ModelType],
-        collection: pymotyc.Collection[ModelType],
-        id_reference: Callable[[], int | str]
-) -> Type[MongoRepository[ModelType, int | str]]:
-    def create(cls):
+    mongo_model: type[ModelType], collection: pymotyc.Collection[ModelType], id_reference: Callable[[], int | str]
+) -> type[MongoRepository[ModelType, int | str]]:
+    def create(cls) -> Any:  # noqa: ANN001
         return cls(collection)
 
-    def constructor(self, c: pymotyc.Collection[ModelType]) -> None:
+    def constructor(self, c: pymotyc.Collection[ModelType]) -> None:  # noqa: ANN001
         super(type(self), self).__init__(c)
 
-    def identity_field(self, /) -> int | str:
+    def identity_field(self, /) -> int | str:  # noqa: ARG001, ANN001
         return id_reference()
 
     new_type = type(
         mongo_model.__name__ + "Repository",
         (MongoRepository,),
-        {
-            "__init__": constructor,
-            "create": classmethod(create),
-            "identity_field": identity_field
-        }
+        {"__init__": constructor, "create": classmethod(create), "identity_field": identity_field},
     )
-    return cast(Type[MongoRepository[ModelType, int | str]], new_type)
+    return cast(type[MongoRepository[ModelType, int | str]], new_type)

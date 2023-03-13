@@ -2,9 +2,7 @@ from fastapi import FastAPI
 
 from innonymous.mongo_storage import MongoStorage
 
-app = FastAPI(
-    title="Innonymous", root_path=""
-)
+app = FastAPI(title="Innonymous", root_path="")
 
 
 @app.on_event("startup")
