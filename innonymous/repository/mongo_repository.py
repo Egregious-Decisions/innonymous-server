@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import Any, Callable, TypeVar, cast
+from typing import Any, Callable, Type, TypeVar, cast
 
 import pymotyc
 from pydantic import BaseModel
@@ -75,8 +75,10 @@ class MongoRepository(AnyRepository[MongoModel, ModelIdType]):
 
 
 def make_mongo_repository_type(
-    mongo_model: type[ModelType], collection: pymotyc.Collection[ModelType], id_reference: Callable[[], int | str]
-) -> type[MongoRepository[ModelType, int | str]]:
+        mongo_model: Type[ModelType],
+        collection: pymotyc.Collection[ModelType],
+        id_reference: Callable[[], int | str],
+) -> Type[MongoRepository[ModelType, int | str]]:
     def create(cls) -> Any:  # noqa: ANN001
         return cls(collection)
 
@@ -91,4 +93,4 @@ def make_mongo_repository_type(
         (MongoRepository,),
         {"__init__": constructor, "create": classmethod(create), "identity_field": identity_field},
     )
-    return cast(type[MongoRepository[ModelType, int | str]], new_type)
+    return cast(Type[MongoRepository[ModelType, int | str]], new_type)
