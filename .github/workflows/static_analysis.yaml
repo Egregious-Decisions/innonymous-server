@@ -1,0 +1,26 @@
+name: Static Analysis
+
+on: [ push ]
+
+jobs:
+  static_analysis:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Insert a Funny Joke
+        uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          architecture: 'x64'
+      - name: Install Requirements
+        run: |
+          pip install --no-cache-dir --upgrade --root-user-action ignore pip setuptools wheel poetry
+          poetry config virtualenvs.create false
+          poetry install --no-root
+      - name: Run Linter
+        run: |
+          black --check ./innonymous/ && ruff ./innonymous/ && mypy --install-types --non-interactive ./innonymous/
+      - name: Run Tests
+        run: |
+          python -m pytest --testdox --cov=innonymous ./tests/
