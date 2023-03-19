@@ -1,6 +1,6 @@
 from uuid import UUID, uuid4
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from innonymous.api.models import User, UserCreateSchema
 from innonymous.repository import AnyRepository, UserRepository
@@ -12,7 +12,8 @@ user_router = APIRouter(tags=["users"])
 async def get_by_uuid(uuid: UUID, users: AnyRepository[User, str] = Depends(UserRepository.create)) -> User:
     user = await users.get(str(uuid))
     if user is None:
-        raise
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No user with such UUID")
+
     return user
 
 
