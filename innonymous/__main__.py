@@ -1,5 +1,3 @@
-import logging
-
 from fastapi import FastAPI
 
 from innonymous.api.routers import user_router

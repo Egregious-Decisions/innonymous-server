@@ -17,7 +17,7 @@ authors = [
 
 [tool.poetry.dependencies]
 python = "==3.10.*"
-pydantic = {extras = ["email", "dotenv"], version = "^1.10"}
+pydantic = { extras = ["email", "dotenv"], version = "^1.10" }
 fastapi = "^0.94"
 gunicorn = "^20.1"
 uvicorn = "^0.21"
@@ -151,6 +151,9 @@ ignore = [
     # Possible SQL injection vector through string-based query construction.
     "S608"
 ]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
 
 [tool.ruff.isort]
 # Combines "as" imports on the same line.

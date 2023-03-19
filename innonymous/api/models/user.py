@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, constr
+from pydantic import BaseModel, Field, constr  # i hate constr
 
 
 class User(BaseModel):
@@ -7,4 +7,4 @@ class User(BaseModel):
 
 
 class UserCreateSchema(BaseModel):
-    name: constr(regex=r"^[\w0-9][\w0-9\s\-_]{0,30}[\w0-9]$") = Field(...)  # type: ignore
+    name: constr(regex=r"^[\w0-9][\w0-9\s\-_]{0,30}[\w0-9]$") = Field(...)  # type: ignore # noqa: PGH003
