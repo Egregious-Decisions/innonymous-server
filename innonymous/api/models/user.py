@@ -1,10 +1,10 @@
-from uuid import UUID
-
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, constr  # i hate constr
 
 
 class User(BaseModel):
-    uuid: UUID = Field(...)
-    nickname: str = Field(...)
+    uuid: str = Field(...)
+    name: str = Field(...)
 
-    chat_rooms: list[UUID] = Field(default_factory=list)
+
+class UserCreateSchema(BaseModel):
+    name: constr(regex=r"^[\w0-9][\w0-9\s\-_]{0,30}[\w0-9]$") = Field(...)  # type: ignore # noqa: PGH003
