@@ -19,5 +19,16 @@ class _MongoSettings(BaseSettings):
         env_file = ".env"
 
 
+class _API(BaseSettings):
+    key: str = Field(..., env="API_KEY")
+
+    captcha_ttl_seconds: int = Field(300, env="CAPTCHA_TTL_SECONDS")
+    jwt_ttl_seconds: int = Field(86400, env="JWT_TTL_SECONDS")
+
+    class Config:
+        env_file = ".env"
+
+
 class Settings:
     mongo = _MongoSettings()
+    api = _API()
