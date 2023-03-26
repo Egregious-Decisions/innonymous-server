@@ -37,8 +37,6 @@ class CaptchaService:
 
     def generate(self) -> Captcha:
         passphrase = self.__make_random_passphrase()
-        import logging
-        logging.critical(passphrase)
         return Captcha(
             hashed_passphrase=self.__encode(passphrase),
             image=self.__make_image(passphrase),
