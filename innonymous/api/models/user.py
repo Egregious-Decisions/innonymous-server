@@ -5,10 +5,13 @@ from pydantic import BaseModel, Field, constr  # i hate constr
 Base64String = str
 
 
-class User(BaseModel):
+class UserInfo(BaseModel):
     name: str = Field(...)
-    password: str = Field(...)
-    salt: str = Field(...)
+    uuid: str = Field(...)
+
+
+class User(UserInfo):
+    password: bytes = Field(...)
     token_expires_at: datetime = Field(...)
 
 
@@ -38,6 +41,11 @@ class UserAccessTokenPayload(BaseModel):
     expires_at: datetime = Field(...)
 
 
-class UserAccess(BaseModel):
+class UserLogInForm(BaseModel):
     name: str = Field(...)
+    password: str = Field(...)
+
+
+class UserSession(BaseModel):
+    uuid: str = Field(...)
     token: str = Field(...)

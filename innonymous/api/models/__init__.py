@@ -4,8 +4,10 @@ from innonymous.api.models.user import (
     ConfirmUserRegistrationForm,
     UnconfirmedUserTokenPayload,
     User,
-    UserAccess,
     UserAccessTokenPayload,
+    UserInfo,
+    UserLogInForm,
     UserRegistrationForm,
     UserRegistrationResponse,
+    UserSession,
 )
